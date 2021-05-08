@@ -36,6 +36,9 @@ export default {
     onButtonPress(button) {
       this.input = `${this.input}${button}`;
     },
+    onEquate() {
+      console.log(this.input);
+    },
   },
 };
 </script>

@@ -48,4 +48,58 @@ describe('Calculator', () => {
     findButtonContainingText('+').trigger('click');
     expect(wrapper.vm.input).toBe('123+');
   });
+
+  test('if there is no input the user cannot input an operator', () => {
+    findButtonContainingText('+').trigger('click');
+    expect(wrapper.vm.input).toBe('');
+
+    findButtonContainingText('*').trigger('click');
+    expect(wrapper.vm.input).toBe('');
+  });
+
+  test('if the last input was an operator the user cannot input another operator', () => {
+    const input = '77+';
+    wrapper.setData({ input });
+
+    findButtonContainingText('+').trigger('click');
+    expect(wrapper.vm.input).toBe('');
+
+    findButtonContainingText('*').trigger('click');
+    expect(wrapper.vm.input).toBe(input);
+  });
+
+  test('if the user has entered 0 and presses another number the 0 should be replaced by the new number at the beginning of input', () => {
+    const input = '0';
+    wrapper.setData({ input });
+
+    findButtonContainingText('1').trigger('click');
+    expect(wrapper.vm.input).toBe('1');
+  });
+
+  test('if the user has entered 0 and presses another number the 0 should be replaced by the new number', () => {
+    const input = '89+0';
+    wrapper.setData({ input });
+
+    findButtonContainingText('1').trigger('click');
+    expect(wrapper.vm.input).toBe('89+1');
+  });
+
+  test('pressing the cancel button clears the input', () => {
+    const input = '89+0';
+    wrapper.setData({ input });
+
+    findButtonContainingText('c').trigger('click');
+    expect(wrapper.vm.input).toBe('');
+  });
+
+  test('pressing = equates the equation', () => {
+    const equateSpy = jest.spyOn(wrapper.vm, 'onEquate');
+    const input = '89+0';
+    wrapper.setData({ input });
+
+    findButtonContainingText('=').trigger('click');
+    expect(wrapper.vm.input).toBe('89+0=');
+
+    expect(equateSpy).toHaveBeenCalled();
+  });
 });
