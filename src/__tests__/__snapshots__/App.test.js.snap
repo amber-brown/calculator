@@ -4,6 +4,10 @@ exports[`App renders correctly 1`] = `
 <div
   id="app"
 >
-  <calculator-stub />
+  <div
+    class="calculator-container"
+  >
+    <calculator-stub />
+  </div>
 </div>
 `;

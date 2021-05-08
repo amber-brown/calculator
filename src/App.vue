@@ -1,6 +1,8 @@
 <template>
   <div id="app">
+    <div class="calculator-container">
     <Calculator />
+    </div>
   </div>
 </template>
 
@@ -23,5 +25,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.calculator-container {
+  max-width: 700px;
+  margin: 0 auto;
 }
 </style>
