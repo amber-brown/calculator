@@ -50,6 +50,10 @@ export default {
       }
 
       if (button === '=') {
+        if (this.lastToken?.type === 'Operator') {
+          this.input = this.input.slice(0, -1);
+          // TODO : test
+        }
         this.onEquate();
         return;
       }

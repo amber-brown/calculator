@@ -1,3 +1,10 @@
+const OPERATOR_PRECEDENCE = {
+  '+': 2,
+  '-': 2,
+  '/': 3,
+  '*': 3,
+};
+
 export const isDigit = (char) => /\d/.test(char);
 
 export const isOperator = (char) => /[-+*/]/.test(char);
@@ -19,10 +26,35 @@ export const tokenizer = (string) => {
       }
     }
     if (isOperator(char)) {
-      tokens.push({ type: 'Operator', value: char });
+      tokens.push({ type: 'Operator', value: char, precedence: OPERATOR_PRECEDENCE[char] });
     }
     return tokens;
   }, []);
+};
+
+export const shuntingYardAlgorithm = (tokens) => {
+  const getLastElement = (arr) => Array.isArray(arr) && arr[arr.length - 1];
+
+  const { outputStack, operatorStack } = tokens.reduce((acc, token) => {
+    if (token.type === 'Operator') {
+      while (
+        getLastElement(acc.operatorStack)
+        && getLastElement(acc.operatorStack)?.precedence >= token.precedence
+      ) {
+        acc.outputStack.push(acc.operatorStack.pop().value);
+      }
+      acc.operatorStack.push(token);
+      return acc;
+    }
+
+    acc.outputStack.push(token.value);
+    return acc;
+  }, { outputStack: [], operatorStack: [] });
+
+  while (operatorStack.length) {
+    outputStack.push(operatorStack.pop().value);
+  }
+  return outputStack;
 };
 
 export const equate = (tokens) => {

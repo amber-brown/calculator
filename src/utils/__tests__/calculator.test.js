@@ -5,13 +5,13 @@ describe('tokenizer', () => {
     const tokens = calculator.tokenizer('123+456/2*4-0');
     expect(tokens).toEqual([
       { type: 'Number', value: '123' },
-      { type: 'Operator', value: '+' },
+      { type: 'Operator', value: '+', precedence: 2 },
       { type: 'Number', value: '456' },
-      { type: 'Operator', value: '/' },
+      { type: 'Operator', value: '/', precedence: 3 },
       { type: 'Number', value: '2' },
-      { type: 'Operator', value: '*' },
+      { type: 'Operator', value: '*', precedence: 3 },
       { type: 'Number', value: '4' },
-      { type: 'Operator', value: '-' },
+      { type: 'Operator', value: '-', precedence: 2 },
       { type: 'Number', value: '0' },
     ]);
   });
@@ -20,13 +20,13 @@ describe('tokenizer', () => {
     const tokens = calculator.tokenizer('123 + 456/2 * 4-0');
     expect(tokens).toEqual([
       { type: 'Number', value: '123' },
-      { type: 'Operator', value: '+' },
+      { type: 'Operator', value: '+', precedence: 2 },
       { type: 'Number', value: '456' },
-      { type: 'Operator', value: '/' },
+      { type: 'Operator', value: '/', precedence: 3 },
       { type: 'Number', value: '2' },
-      { type: 'Operator', value: '*' },
+      { type: 'Operator', value: '*', precedence: 3 },
       { type: 'Number', value: '4' },
-      { type: 'Operator', value: '-' },
+      { type: 'Operator', value: '-', precedence: 2 },
       { type: 'Number', value: '0' },
     ]);
   });
@@ -41,5 +41,24 @@ describe('tokenizer', () => {
 
   it('return an empty array for non string input', () => {
     expect(calculator.tokenizer(123)).toEqual([]);
+  });
+});
+
+describe('shunting yard algorithm', () => {
+  it('it converts tokens to reverse polish notation', () => {
+    const tokens = [
+      { type: 'Number', value: '123' },
+      { type: 'Operator', value: '+', precedence: 2 },
+      { type: 'Number', value: '456' },
+      { type: 'Operator', value: '/', precedence: 3 },
+      { type: 'Number', value: '2' },
+      { type: 'Operator', value: '*', precedence: 3 },
+      { type: 'Number', value: '4' },
+      { type: 'Operator', value: '-', precedence: 2 },
+      { type: 'Number', value: '0' },
+    ];
+
+    const reversePolishNotation = calculator.shuntingYardAlgorithm(tokens);
+    expect(reversePolishNotation).toStrictEqual(['123', '456', '2', '/', '4', '*', '+', '0', '-']);
   });
 });
