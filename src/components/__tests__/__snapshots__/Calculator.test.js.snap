@@ -120,14 +120,14 @@ exports[`Calculator renders correctly 1`] = `
         class="calculator__button"
       >
         
-          0
+          c
       
       </button>
       <button
         class="calculator__button"
       >
         
-          c
+          0
       
       </button>
       <button

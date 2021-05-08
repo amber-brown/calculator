@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import * as calculator from '@/utils/calculator';
+
 export default {
   name: 'Calculator',
   data() {
@@ -27,13 +29,44 @@ export default {
         ['7', '8', '9', '+'],
         ['4', '5', '6', '-'],
         ['1', '2', '3', '*'],
-        ['0', 'c', '=', '/'],
+        ['c', '0', '=', '/'],
       ],
       input: '',
     };
   },
+  computed: {
+    tokens() {
+      return calculator.tokenizer(this.input);
+    },
+    lastToken() {
+      return this.tokens[this.tokens.length - 1];
+    },
+  },
   methods: {
     onButtonPress(button) {
+      if (button === 'c') {
+        this.input = '';
+        return;
+      }
+
+      if (button === '=') {
+        this.onEquate();
+        return;
+      }
+
+      if (!this.input.length && calculator.isOperator(button)) {
+        return;
+      }
+
+      if (calculator.isDigit(button) && this.lastToken?.value === '0') {
+        this.input = `${this.input.slice(0, -1)}${button}`;
+        return;
+      }
+
+      if (calculator.isOperator(button) && this.lastToken?.type === 'Operator') {
+        this.input = `${this.input.slice(0, -1)}${button}`;
+        return;
+      }
       this.input = `${this.input}${button}`;
     },
     onEquate() {

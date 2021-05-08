@@ -57,15 +57,15 @@ describe('Calculator', () => {
     expect(wrapper.vm.input).toBe('');
   });
 
-  test('if the last input was an operator the user cannot input another operator', () => {
+  test('if the last input was an operator the next operator input changes that operator', () => {
     const input = '77+';
     wrapper.setData({ input });
 
-    findButtonContainingText('+').trigger('click');
-    expect(wrapper.vm.input).toBe('');
+    findButtonContainingText('-').trigger('click');
+    expect(wrapper.vm.input).toBe('77-');
 
     findButtonContainingText('*').trigger('click');
-    expect(wrapper.vm.input).toBe(input);
+    expect(wrapper.vm.input).toBe('77*');
   });
 
   test('if the user has entered 0 and presses another number the 0 should be replaced by the new number at the beginning of input', () => {
@@ -98,7 +98,6 @@ describe('Calculator', () => {
     wrapper.setData({ input });
 
     findButtonContainingText('=').trigger('click');
-    expect(wrapper.vm.input).toBe('89+0=');
 
     expect(equateSpy).toHaveBeenCalled();
   });
