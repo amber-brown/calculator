@@ -16,6 +16,11 @@
             @click="onButtonPress(button)"
             :key="button"
             class="calculator__button"
+            :class="{
+              'calculator__button--cancel': button === 'c',
+              'calculator__button--calculate': button === '=',
+              'calculator__button--operator': isButtonOperator(button),
+            }"
           >
             {{ button }}
           </button>
@@ -93,6 +98,9 @@ export default {
       const reversePolishNotaion = calculator.shuntingYardAlgorithm(this.tokens);
       this.result = calculator.calculate(reversePolishNotaion);
     },
+    isButtonOperator(button) {
+      return calculator.isOperator(button);
+    },
   },
 };
 </script>
@@ -142,5 +150,17 @@ export default {
   outline: none;
   width: 100%;
   height: 50px;
+}
+
+.calculator__button--cancel {
+  background-color: rgb(184, 78, 78);
+}
+
+.calculator__button--calculate {
+  background-color: rgb(126, 172, 126)
+}
+
+.calculator__button--operator {
+  background-color: rgb(168, 167, 167);
 }
 </style>

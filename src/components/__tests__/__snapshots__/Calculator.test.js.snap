@@ -50,7 +50,7 @@ exports[`Calculator renders correctly 1`] = `
       
       </button>
       <button
-        class="calculator__button"
+        class="calculator__button calculator__button--operator"
       >
         
         +
@@ -82,7 +82,7 @@ exports[`Calculator renders correctly 1`] = `
       
       </button>
       <button
-        class="calculator__button"
+        class="calculator__button calculator__button--operator"
       >
         
         -
@@ -114,7 +114,7 @@ exports[`Calculator renders correctly 1`] = `
       
       </button>
       <button
-        class="calculator__button"
+        class="calculator__button calculator__button--operator"
       >
         
         *
@@ -125,7 +125,7 @@ exports[`Calculator renders correctly 1`] = `
       class="calculator__button-row"
     >
       <button
-        class="calculator__button"
+        class="calculator__button calculator__button--cancel"
       >
         
         c
@@ -139,14 +139,14 @@ exports[`Calculator renders correctly 1`] = `
       
       </button>
       <button
-        class="calculator__button"
+        class="calculator__button calculator__button--calculate"
       >
         
         =
       
       </button>
       <button
-        class="calculator__button"
+        class="calculator__button calculator__button--operator"
       >
         
         /
