@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+import * as calculator from '@/utils/calculator';
 import Calculator from '../Calculator.vue';
 
 let wrapper;
@@ -92,13 +93,41 @@ describe('Calculator', () => {
     expect(wrapper.vm.input).toBe('');
   });
 
-  test('pressing = equates the equation', () => {
-    const equateSpy = jest.spyOn(wrapper.vm, 'onEquate');
+  test('pressing "=" calculates the equation', () => {
+    const calculateSpy = jest.spyOn(calculator, 'calculate');
     const input = '89+0';
     wrapper.setData({ input });
 
     findButtonContainingText('=').trigger('click');
 
-    expect(equateSpy).toHaveBeenCalled();
+    expect(calculateSpy).toHaveBeenCalled();
+  });
+
+  test('if the user presses "=" and the last input was an operator, it removes the last operator before calculating', () => {
+    const input = '4-5*';
+    wrapper.setData({ input });
+
+    findButtonContainingText('=').trigger('click');
+    expect(wrapper.vm.input).toBe('4-5');
+  });
+
+  test('if there is a result and the user enters an operator the result becomes the first part of the input', () => {
+    const result = '3';
+    const input = '2+1';
+    wrapper.setData({ input, result });
+
+    findButtonContainingText('+').trigger('click');
+    expect(wrapper.vm.result).toBe('');
+    expect(wrapper.vm.input).toBe('3+');
+  });
+
+  test('if there is a result and the user enters a digit, the result and the input are cleared and the digit is displayed as the input', () => {
+    const result = '3';
+    const input = '2+1';
+    wrapper.setData({ input, result });
+
+    findButtonContainingText('6').trigger('click');
+    expect(wrapper.vm.result).toBe('');
+    expect(wrapper.vm.input).toBe('6');
   });
 });

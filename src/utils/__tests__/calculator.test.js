@@ -62,3 +62,11 @@ describe('shunting yard algorithm', () => {
     expect(reversePolishNotation).toStrictEqual(['123', '456', '2', '/', '4', '*', '+', '0', '-']);
   });
 });
+
+describe('calculate', () => {
+  it('returns the correct answer when given an equation in reverse polish notation', () => {
+    const reversePolishNotation = ['123', '456', '2', '/', '4', '*', '+', '0', '-'];
+    const result = calculator.calculate(reversePolishNotation);
+    expect(result).toBe(1035);
+  });
+});

@@ -1,7 +1,13 @@
 <template>
     <div class="calculator">
       <div class="calculator__display">
-        <p class="calculator__display-text">{{ input }}</p>
+        <p
+          class="calculator__display-text"
+          :class="{'calculator__display-text--answer-visible': result }"
+        >
+          {{ input }}
+        </p>
+        <p class="calculator__display-text calculator__display-text-answer">{{ result }}</p>
       </div>
       <div class="calculator__buttons-wrapper">
         <div v-for="(buttonRow, index) in buttons" :key="index" class="calculator__button-row">
@@ -11,7 +17,7 @@
             :key="button"
             class="calculator__button"
           >
-              {{button}}
+            {{ button }}
           </button>
         </div>
       </div>
@@ -32,6 +38,7 @@ export default {
         ['c', '0', '=', '/'],
       ],
       input: '',
+      result: '',
     };
   },
   computed: {
@@ -44,6 +51,16 @@ export default {
   },
   methods: {
     onButtonPress(button) {
+      if (this.result !== '') {
+        if (calculator.isOperator(button)) {
+          this.input = `${this.result}${button}`;
+        }
+        if (calculator.isDigit(button)) {
+          this.input = '';
+        }
+        this.result = '';
+      }
+
       if (button === 'c') {
         this.input = '';
         return;
@@ -52,9 +69,8 @@ export default {
       if (button === '=') {
         if (this.lastToken?.type === 'Operator') {
           this.input = this.input.slice(0, -1);
-          // TODO : test
         }
-        this.onEquate();
+        this.calculate();
         return;
       }
 
@@ -73,8 +89,9 @@ export default {
       }
       this.input = `${this.input}${button}`;
     },
-    onEquate() {
-      console.log(this.input);
+    calculate() {
+      const reversePolishNotaion = calculator.shuntingYardAlgorithm(this.tokens);
+      this.result = calculator.calculate(reversePolishNotaion);
     },
   },
 };
@@ -92,14 +109,25 @@ export default {
   padding: 6px 12px;
   height: 50px;
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: column;
 }
 
 .calculator__display-text {
   display: inline;
-  font-size: 18px;
+  font-size: 20px;
   margin: 0;
+}
+
+.calculator__display-text--answer-visible {
+  font-size: 16px;
+  color: grey;
+}
+
+.calculator__display-text-answer {
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .calculator__button-row {

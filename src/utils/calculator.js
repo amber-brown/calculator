@@ -1,3 +1,9 @@
+const OPERATIONS = {
+  '+': (left, right) => left + right,
+  '-': (left, right) => left - right,
+  '/': (left, right) => Math.trunc(left / right),
+  '*': (left, right) => left * right,
+};
 const OPERATOR_PRECEDENCE = {
   '+': 2,
   '-': 2,
@@ -57,6 +63,19 @@ export const shuntingYardAlgorithm = (tokens) => {
   return outputStack;
 };
 
-export const equate = (tokens) => {
-  console.log(tokens);
+export const calculate = (equation) => {
+  const [sum] = equation.reduce((stack, token) => {
+    if (isDigit(token)) {
+      stack.push(parseInt(token, 10));
+    }
+    if (isOperator(token)) {
+      const operation = OPERATIONS[token];
+      const right = stack.pop();
+      const left = stack.pop();
+      const result = operation(left, right);
+      stack.push(result);
+    }
+    return stack;
+  }, []);
+  return sum;
 };

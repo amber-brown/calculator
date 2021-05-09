@@ -11,6 +11,14 @@ exports[`Calculator renders correctly 1`] = `
       class="calculator__display-text"
     >
       
+      
+    
+    </p>
+     
+    <p
+      class="calculator__display-text calculator__display-text-answer"
+    >
+      
     </p>
   </div>
    
@@ -24,60 +32,28 @@ exports[`Calculator renders correctly 1`] = `
         class="calculator__button"
       >
         
-          7
+        7
       
       </button>
       <button
         class="calculator__button"
       >
         
-          8
+        8
       
       </button>
       <button
         class="calculator__button"
       >
         
-          9
+        9
       
       </button>
       <button
         class="calculator__button"
       >
         
-          +
-      
-      </button>
-    </div>
-    <div
-      class="calculator__button-row"
-    >
-      <button
-        class="calculator__button"
-      >
-        
-          4
-      
-      </button>
-      <button
-        class="calculator__button"
-      >
-        
-          5
-      
-      </button>
-      <button
-        class="calculator__button"
-      >
-        
-          6
-      
-      </button>
-      <button
-        class="calculator__button"
-      >
-        
-          -
+        +
       
       </button>
     </div>
@@ -88,28 +64,28 @@ exports[`Calculator renders correctly 1`] = `
         class="calculator__button"
       >
         
-          1
+        4
       
       </button>
       <button
         class="calculator__button"
       >
         
-          2
+        5
       
       </button>
       <button
         class="calculator__button"
       >
         
-          3
+        6
       
       </button>
       <button
         class="calculator__button"
       >
         
-          *
+        -
       
       </button>
     </div>
@@ -120,28 +96,60 @@ exports[`Calculator renders correctly 1`] = `
         class="calculator__button"
       >
         
-          c
+        1
       
       </button>
       <button
         class="calculator__button"
       >
         
-          0
+        2
       
       </button>
       <button
         class="calculator__button"
       >
         
-          =
+        3
       
       </button>
       <button
         class="calculator__button"
       >
         
-          /
+        *
+      
+      </button>
+    </div>
+    <div
+      class="calculator__button-row"
+    >
+      <button
+        class="calculator__button"
+      >
+        
+        c
+      
+      </button>
+      <button
+        class="calculator__button"
+      >
+        
+        0
+      
+      </button>
+      <button
+        class="calculator__button"
+      >
+        
+        =
+      
+      </button>
+      <button
+        class="calculator__button"
+      >
+        
+        /
       
       </button>
     </div>
