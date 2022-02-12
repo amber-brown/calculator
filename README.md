@@ -1,6 +1,6 @@
 # Calculator
 
-Calculator which performs integer arithmetic operations, limited to + - / \* operators.
+Calculator which performs integer arithmetic operations, limited to + - / \* operators, built with Vue.js.
 
 Implemented using the [Shunting Yard Algorithm](https://en.wikipedia.org/wiki/Shunting-yard_algorithm) to convert calculation Reverse Polish Notation to take account of BIDMAS.
 
