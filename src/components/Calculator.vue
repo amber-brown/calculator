@@ -10,19 +10,52 @@
         <p class="calculator__display-text calculator__display-text-answer">{{ result }}</p>
       </div>
       <div class="calculator__buttons-wrapper">
-        <div v-for="(buttonRow, index) in buttons" :key="index" class="calculator__button-row">
+        <div class="calculator__button-row">
+          <button @click="onNumberPress(7)" class="calculator__button">7</button>
+          <button @click="onNumberPress(8)" class="calculator__button">8</button>
+          <button @click="onNumberPress(9)" class="calculator__button">9</button>
           <button
-            v-for="button in buttonRow"
-            @click="onButtonPress(button)"
-            :key="button"
-            class="calculator__button"
-            :class="{
-              'calculator__button--cancel': button === 'c',
-              'calculator__button--calculate': button === '=',
-              'calculator__button--operator': isButtonOperator(button),
-            }"
-          >
-            {{ button }}
+            @click="onOperatorPress('+')"
+            class="calculator__button calculator__button--operator">
+            +
+        </button>
+        </div>
+        <div class="calculator__button-row">
+          <button @click="onNumberPress(4)" class="calculator__button">4</button>
+          <button @click="onNumberPress(5)" class="calculator__button">5</button>
+          <button @click="onNumberPress(6)" class="calculator__button">6</button>
+          <button
+            @click="onOperatorPress('-')"
+            class="calculator__button calculator__button--operator">
+            -
+          </button>
+        </div>
+        <div class="calculator__button-row">
+          <button @click="onNumberPress(1)" class="calculator__button">1</button>
+          <button @click="onNumberPress(2)" class="calculator__button">2</button>
+          <button @click="onNumberPress(3)" class="calculator__button">3</button>
+          <button
+            @click="onOperatorPress('*')"
+            class="calculator__button calculator__button--operator">
+            *
+          </button>
+        </div>
+        <div class="calculator__button-row">
+          <button
+            @click="onCancel()"
+            class="calculator__button calculator__button--cancel">
+            c
+          </button>
+          <button @click="onNumberPress(0)" class="calculator__button">0</button>
+          <button
+            @click="onCalculate()"
+            class="calculator__button calculator__button--calculate">
+            =
+          </button>
+          <button
+            @click="onOperatorPress('/')"
+            class="calculator__button calculator__button--operator" >
+            /
           </button>
         </div>
       </div>
@@ -36,12 +69,6 @@ export default {
   name: 'Calculator',
   data() {
     return {
-      buttons: [
-        ['7', '8', '9', '+'],
-        ['4', '5', '6', '-'],
-        ['1', '2', '3', '*'],
-        ['c', '0', '=', '/'],
-      ],
       input: '',
       result: '',
     };
@@ -55,46 +82,43 @@ export default {
     },
   },
   methods: {
-    onButtonPress(button) {
+    onCancel() {
+      this.input = '';
+      this.result = '';
+    },
+    onNumberPress(button) {
       if (this.result !== '') {
-        if (calculator.isOperator(button)) {
-          this.input = `${this.result}${button}`;
-        }
-        if (calculator.isDigit(button)) {
-          this.input = '';
-        }
-        this.result = '';
+        this.onCancel();
       }
 
-      if (button === 'c') {
-        this.input = '';
-        return;
-      }
-
-      if (button === '=') {
-        if (this.lastToken?.type === 'Operator') {
-          this.input = this.input.slice(0, -1);
-        }
-        this.calculate();
-        return;
-      }
-
-      if (!this.input.length && calculator.isOperator(button)) {
-        return;
-      }
-
-      if (calculator.isDigit(button) && this.lastToken?.value === '0') {
+      if (this.lastToken?.value === '0') {
         this.input = `${this.input.slice(0, -1)}${button}`;
         return;
       }
 
-      if (calculator.isOperator(button) && this.lastToken?.type === 'Operator') {
+      this.input = `${this.input}${button}`;
+    },
+    onOperatorPress(button) {
+      if (this.result !== '') {
+        this.input = `${this.result}${button}`;
+        this.result = '';
+      }
+
+      if (!this.input.length) {
+        return;
+      }
+
+      if (this.lastToken?.type === 'Operator') {
         this.input = `${this.input.slice(0, -1)}${button}`;
         return;
       }
       this.input = `${this.input}${button}`;
     },
-    calculate() {
+    onCalculate() {
+      if (this.lastToken?.type === 'Operator') {
+        this.input = this.input.slice(0, -1);
+      }
+
       const reversePolishNotaion = calculator.shuntingYardAlgorithm(this.tokens);
       this.result = calculator.calculate(reversePolishNotaion);
     },
